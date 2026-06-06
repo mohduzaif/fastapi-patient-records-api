@@ -166,6 +166,6 @@ http://127.0.0.1:8000/docs
 ## 👨‍💻 Author  
 **Mohd Uzaif**  
 🎓 *M.Tech (AI & ML), Jamia Millia Islamia University*   
-
 ---
+
 Learning and building modern backend applications with FastAPI.
