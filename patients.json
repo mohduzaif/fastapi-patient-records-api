@@ -48,15 +48,5 @@
         "weight": 75,
         "bmi": 31.22,
         "verdict": "Obese"
-    },
-    "P007": {
-        "name": "M Tiwari",
-        "city": "Mumbai",
-        "age": 35,
-        "gender": "Male",
-        "height": 1.78,
-        "weight": 65.0,
-        "bmi": 20.52,
-        "verdict": "Normal"
     }
 }
