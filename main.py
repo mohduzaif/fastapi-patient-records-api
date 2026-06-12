@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Path, HTTPException, Query
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field, computed_field
-from typing import Annotated, Literal
+from typing import Annotated, Literal, Optional
 import json
 
 
@@ -38,6 +38,36 @@ class Patient(BaseModel):
             return 'Obese'
 
 
+# this pydantic model is used to validate the data comes for patient detail updation.
+class PatientUpdate(BaseModel):
+    name: str | None = Field(
+        default=None,
+        min_length=3,
+        max_length=50
+    )
+
+    city: str | None = Field(
+        default=None,
+        max_length=50
+    )
+
+    age: int | None = Field(
+        default=None,
+        gt=0,
+        lt=120
+    )
+
+    gender: bool | None = Field(
+        default=None
+    )
+
+    height: float | None = Field(
+        default=None
+    )
+
+    weight: float | None = Field(
+        default=None
+    )
 
 # create the FastAPI object to create the routes.
 app = FastAPI()
@@ -151,5 +181,51 @@ def insert_patient(patient : Patient):
         content = {
             'success' : True, 
             'message' : 'Patient Created Successfully'
+        }
+    )
+
+# this route is responsible for the update the details of the patient into the database/JSON file.
+@app.put('/update/{patient_id}')
+def update_patient(patient_update : PatientUpdate, patient_id : str = Path(..., description = 'Provide the unique Id of the Patient which you want to update', example = 'P001')):
+ 
+    # load the actual data from the JSON file.
+    data = load_data()
+
+    # check whether the given patient exist or not.
+    if patient_id not in data:
+        raise HTTPException(
+            status_code = 404, 
+            detail = 'Patient does not exist.'
+        )
+    
+    # extract the data of that patient.
+    current_patient_info = data[patient_id]
+    
+    # convert the pydantic object into a dictionary.
+    updated_patient_info = patient_update.model_dump(exclude_unset = True)
+
+    # update that data
+    for key, value in updated_patient_info.items():
+        current_patient_info[key] = value 
+    
+    # create the pydantic object for current updated patient.
+    current_patient_info['patient_id'] = patient_id
+    current_patient_obj = Patient(**current_patient_info)
+
+    # Now convert the current patient object, because now it will contain all the info about the current patient.
+    current_patient_info = current_patient_obj.model_dump(exclude = 'patient_id')
+
+    # update the complete data that now stored to JSON file.
+    data[patient_id] = current_patient_info
+
+    # save the data to JSON file.
+    save_data(data)
+
+    # return the JSON response on sucessful updation.
+    return JSONResponse(
+        status_code = 200,
+        content = {
+            'success' : True, 
+            'message' : 'Patient Data updated Successfully.'
         }
     )
