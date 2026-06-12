@@ -48,5 +48,15 @@
         "weight": 75,
         "bmi": 31.22,
         "verdict": "Obese"
+    },
+    "P006": {
+        "name": "Sam",
+        "city": "Delhi",
+        "age": 26,
+        "gender": "Female",
+        "height": 1.6,
+        "weight": 48.0,
+        "bmi": 18.75,
+        "verdict": "Normal"
     }
 }
