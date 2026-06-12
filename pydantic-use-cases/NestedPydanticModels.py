@@ -1,6 +1,13 @@
 from pydantic import BaseModel
 
 
+# Why we need of Nested Models.
+
+# 1. Better Organisation of related data (e.g. vitals, address, insurance)
+# 2. Reusability: Use Vitals, address etc in multiple models (e.g., Patient, MedicalRecord)
+# 3. Readability is much Easier for developers and API consumers to understand
+# 4. Validation in Nested models are validated automatically—no extra work needed
+
 class Address(BaseModel):
     city : str
     state : str
