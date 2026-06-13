@@ -229,3 +229,32 @@ def update_patient(patient_update : PatientUpdate, patient_id : str = Path(..., 
             'message' : 'Patient Data updated Successfully.'
         }
     )
+
+# this route is responsible for the deletion of the patient information from the database/JSON file.
+@app.delete('/delete_patient/{patient_id}')
+def delete_patient(patient_id : str = Path(..., description = 'Provide the unique Id of the Patient which you want to delete from the database', example = 'P001')):
+    
+    # load the data.
+    data = load_data()
+
+    # check whether the given patient exist or not.
+    if patient_id not in data:
+        raise HTTPException(
+            status_code = 404, 
+            detail = 'Patient does not Exist.'
+        )
+    
+    # delete the user from the current data.
+    del data[patient_id]
+
+    # Stored back the new data into a database/JSON file 
+    save_data(data)
+
+    # return the JSON response on sucessful updation.
+    return JSONResponse(
+        status_code = 200,
+        content = {
+            'success' : True, 
+            'message' : 'Patient Data deleted Successfully.'
+        }
+    )
