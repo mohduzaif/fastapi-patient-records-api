@@ -118,10 +118,8 @@ def predicted_result(userData : UserInput):
 
     prediction = model.predict(current_input_df)[0]
 
+
     return JSONResponse(
-        status_code = 200, 
-        content = {
-            'message' : f'The Prediction for the given input : {prediction}'
-        }
+        status_code=200, content={'predicted_category': prediction}
     )
 
