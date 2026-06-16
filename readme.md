@@ -169,3 +169,9 @@ http://127.0.0.1:8000/docs
 ---
 
 Learning and building modern backend applications with FastAPI.
+
+---
+
+## 📜 License
+
+This project is open-source and available under the MIT License.
